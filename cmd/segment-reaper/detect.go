@@ -303,14 +303,13 @@ func printSegment(ctx context.Context, db metainfo.PointerDB, cluster Cluster, s
 		return err
 	}
 	encodedPath := base64.StdEncoding.EncodeToString([]byte(path))
-	csvWriter.Write([]string{
+	return csvWriter.Write([]string{
 		cluster.projectID,
 		segmentIndex,
 		cluster.bucket,
 		encodedPath,
 		creationDate,
 	})
-	return nil
 }
 
 func pointerCreationDate(ctx context.Context, db metainfo.PointerDB, cluster Cluster, segmentIndex string, path string) (string, error) {
