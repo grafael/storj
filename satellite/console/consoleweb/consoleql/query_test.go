@@ -15,6 +15,7 @@ import (
 
 	"storj.io/storj/pkg/auth"
 	"storj.io/storj/private/testcontext"
+	"storj.io/storj/private/testrand"
 	"storj.io/storj/satellite"
 	"storj.io/storj/satellite/console"
 	"storj.io/storj/satellite/console/consoleauth"
@@ -79,6 +80,7 @@ func TestGraphqlQuery(t *testing.T) {
 		require.NoError(t, err)
 
 		createUser := console.CreateUser{
+			ID:        testrand.UUID(),
 			FullName:  "John",
 			ShortName: "",
 			Email:     "mtest@mail.test",
@@ -91,6 +93,7 @@ func TestGraphqlQuery(t *testing.T) {
 
 		rootUser, err := service.CreateUser(ctx, createUser, regToken.Secret, refUserID)
 		require.NoError(t, err)
+		require.NotNil(t, rootUser)
 
 		t.Run("Activation", func(t *testing.T) {
 			activationToken, err := service.GenerateActivationToken(
@@ -200,6 +203,7 @@ func TestGraphqlQuery(t *testing.T) {
 		require.NoError(t, err)
 
 		user1, err := service.CreateUser(authCtx, console.CreateUser{
+			ID:        testrand.UUID(),
 			FullName:  "Mickey Last",
 			ShortName: "Last",
 			Password:  "123a123",
@@ -224,6 +228,7 @@ func TestGraphqlQuery(t *testing.T) {
 		require.NoError(t, err)
 
 		user2, err := service.CreateUser(authCtx, console.CreateUser{
+			ID:        testrand.UUID(),
 			FullName:  "Dubas Name",
 			ShortName: "Name",
 			Email:     "muu2@mail.test",
@@ -444,6 +449,7 @@ func TestGraphqlQuery(t *testing.T) {
 			regToken, err := service.CreateRegToken(ctx, 2)
 			require.NoError(t, err)
 			user, err := service.CreateUser(authCtx, console.CreateUser{
+				ID:        testrand.UUID(),
 				FullName:  "Example User",
 				ShortName: "Example",
 				Email:     "user@mail.test",
@@ -482,6 +488,7 @@ func TestGraphqlQuery(t *testing.T) {
 			regToken, err := service.CreateRegToken(ctx, 2)
 			require.NoError(t, err)
 			user, err := service.CreateUser(authCtx, console.CreateUser{
+				ID:        testrand.UUID(),
 				FullName:  "Example User",
 				ShortName: "Example",
 				Email:     "user1@mail.test",

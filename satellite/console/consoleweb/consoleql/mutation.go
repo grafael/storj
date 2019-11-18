@@ -86,6 +86,11 @@ func rootMutation(log *zap.Logger, service *console.Service, mailService *mailse
 					refUserID, _ := p.Args[ReferrerUserID].(string)
 
 					createUser := fromMapCreateUser(input)
+					userID, err := uuid.New()
+					if err != nil {
+						return nil, HandleError(err)
+					}
+					createUser.ID = *userID
 
 					secret, err := console.RegistrationSecretFromBase64(secretInput)
 					if err != nil {

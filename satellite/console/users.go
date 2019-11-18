@@ -47,11 +47,12 @@ func (user *UserInfo) IsValid() error {
 
 // CreateUser struct holds info for User creation.
 type CreateUser struct {
-	FullName  string `json:"fullName"`
-	ShortName string `json:"shortName"`
-	Email     string `json:"email"`
-	PartnerID string `json:"partnerId"`
-	Password  string `json:"password"`
+	ID        uuid.UUID `json:"-"`
+	FullName  string    `json:"fullName"`
+	ShortName string    `json:"shortName"`
+	Email     string    `json:"email"`
+	PartnerID string    `json:"partnerId"`
+	Password  string    `json:"password"`
 }
 
 // IsValid checks CreateUser validity and returns error describing whats wrong.
@@ -70,6 +71,10 @@ func (user *CreateUser) IsValid() error {
 		if err != nil {
 			errs.AddWrap(err)
 		}
+	}
+
+	if user.ID.IsZero() {
+		errs.AddWrap(ErrValidation.New("user id is not set"))
 	}
 
 	return errs.Combine()

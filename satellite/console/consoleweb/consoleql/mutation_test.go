@@ -20,6 +20,7 @@ import (
 	"storj.io/storj/private/currency"
 	"storj.io/storj/private/post"
 	"storj.io/storj/private/testcontext"
+	"storj.io/storj/private/testrand"
 	"storj.io/storj/satellite"
 	"storj.io/storj/satellite/console"
 	"storj.io/storj/satellite/console/consoleauth"
@@ -91,6 +92,7 @@ func TestGrapqhlMutation(t *testing.T) {
 		require.NoError(t, err)
 
 		createUser := console.CreateUser{
+			ID:        testrand.UUID(),
 			FullName:  "John Roll",
 			ShortName: "Roll",
 			Email:     "test@mail.test",
@@ -118,6 +120,8 @@ func TestGrapqhlMutation(t *testing.T) {
 
 		rootUser, err := service.CreateUser(ctx, createUser, regToken.Secret, refUserID)
 		require.NoError(t, err)
+		require.NotNil(t, createUser)
+		require.NotNil(t, rootUser)
 		require.Equal(t, createUser.PartnerID, rootUser.PartnerID.String())
 
 		activationToken, err := service.GenerateActivationToken(ctx, rootUser.ID, rootUser.Email)
@@ -406,6 +410,7 @@ func TestGrapqhlMutation(t *testing.T) {
 		require.NoError(t, err)
 
 		user1, err := service.CreateUser(authCtx, console.CreateUser{
+			ID:       testrand.UUID(),
 			FullName: "User1",
 			Email:    "u1@mail.test",
 			Password: "123a123",
@@ -430,6 +435,7 @@ func TestGrapqhlMutation(t *testing.T) {
 		require.NoError(t, err)
 
 		user2, err := service.CreateUser(authCtx, console.CreateUser{
+			ID:       testrand.UUID(),
 			FullName: "User1",
 			Email:    "u2@mail.test",
 			Password: "123a123",
